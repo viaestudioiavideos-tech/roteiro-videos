@@ -55,7 +55,7 @@ ${data.objective || 'Não informado'}
 Hook: ${data.script.hook}
 CTA: ${data.script.cta}
 
-🤖 *Gerado por Briefing.AI*
+🤖 *Gerado por Artifex*
 `;
         const encoded = encodeURIComponent(text);
         window.open(`https://wa.me/?text=${encoded}`, '_blank');
