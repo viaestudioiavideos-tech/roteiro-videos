@@ -67,9 +67,22 @@ ${data.objective || 'Não informado'}
 👤 *Avatar Principal:* ${data.avatarType}
 - Nome: ${data.avatarName || 'Não informado'}${avatarRef}${extrasText}
 
-📝 *Roteiro Resumido:*
-Hook: ${data.script.hook}
-CTA: ${data.script.cta}
+📝 *Roteiro Completo:*
+
+⚡ *1. Gancho (Hook):*
+${data.script.hook || '(Vazio)'}
+
+😫 *2. Problema (Pain):*
+${data.script.pain || '(Vazio)'}
+
+💎 *3. Solução (Value):*
+${data.script.value || '(Vazio)'}
+
+🏆 *4. Autoridade (Trust):*
+${data.script.trust || '(Vazio)'}
+
+📣 *5. Chamada (CTA):*
+${data.script.cta || '(Vazio)'}
 
 🤖 *Gerado por Artifex*
 `.trim();
@@ -145,6 +158,30 @@ CTA: ${data.script.cta}
                     </div>
                 </div>
 
+                 {/* Script Summary Card - Now showing it has content */}
+                 <div className="group relative bg-white dark:bg-dark-surface rounded-2xl p-4 border border-slate-200 dark:border-dark-border shadow-sm hover:shadow-md hover:border-secondary-200 transition-all duration-300">
+                    <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary-50 text-secondary-600 dark:bg-secondary-500/10 dark:text-secondary-400">
+                            <span className="material-symbols-outlined text-2xl">article</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Roteiro Completo</p>
+                                <button onClick={() => onEditStep(3)} className="text-slate-300 hover:text-secondary-500 dark:text-slate-600 dark:hover:text-secondary-400 transition-colors">
+                                    <span className="material-symbols-outlined text-[18px]">edit</span>
+                                </button>
+                            </div>
+                            <div className="relative mt-1 pl-3 border-l-2 border-secondary-200 dark:border-secondary-800">
+                                <p className="text-sm text-slate-600 dark:text-slate-300">
+                                    <span className="font-bold">Hook:</span> {data.script.hook ? '✅ Definido' : '❌ Vazio'} <br/>
+                                    <span className="font-bold">CTA:</span> {data.script.cta ? '✅ Definido' : '❌ Vazio'}
+                                </p>
+                                <p className="text-[10px] text-slate-400 mt-1 italic">Veja o texto completo na prévia abaixo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                  {/* Avatar */}
                 <div className="group relative bg-white dark:bg-dark-surface rounded-2xl p-4 border border-slate-200 dark:border-dark-border shadow-sm hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-4">
@@ -181,9 +218,9 @@ CTA: ${data.script.cta}
                 {/* WhatsApp Text Preview Box */}
                 <div className="mt-4 mb-2">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1 mb-2 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[16px]">visibility</span> Prévia da Mensagem
+                        <span className="material-symbols-outlined text-[16px]">visibility</span> Prévia da Mensagem (Roteiro Completo)
                     </h4>
-                    <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-dark-border text-xs text-slate-600 dark:text-slate-300 font-mono whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto shadow-inner">
+                    <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-dark-border text-xs text-slate-600 dark:text-slate-300 font-mono whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto shadow-inner">
                         {messageText}
                     </div>
                 </div>
