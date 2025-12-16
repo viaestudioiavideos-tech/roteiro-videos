@@ -12,6 +12,11 @@ interface Props {
 
 const AvatarSelection: React.FC<Props> = ({ data, updateData, onNext, onBack, totalSteps, currentStep }) => {
     
+    // Image Constants
+    const CLONE_IMG = "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&q=80&w=400";
+    const HUMAN_IMG = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
+    const MASCOT_IMG = "https://images.unsplash.com/photo-1634896941598-b6b500a502a7?q=80&w=400&auto=format&fit=crop";
+
     // Local state for main avatar upload
     const handleMainAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -20,7 +25,8 @@ const AvatarSelection: React.FC<Props> = ({ data, updateData, onNext, onBack, to
             reader.onloadend = () => {
                 updateData({ 
                     avatarType: 'upload', 
-                    uploadedAvatarImage: reader.result as string 
+                    uploadedAvatarImage: reader.result as string,
+                    avatarUrl: undefined // Clear URL as this is a local upload
                 });
             };
             reader.readAsDataURL(file);
@@ -119,7 +125,7 @@ const AvatarSelection: React.FC<Props> = ({ data, updateData, onNext, onBack, to
                 <div className="flex flex-col gap-4">
                     {/* Main Featured Option */}
                     <div 
-                        onClick={() => updateData({ avatarType: 'clone' })}
+                        onClick={() => updateData({ avatarType: 'clone', avatarUrl: CLONE_IMG })}
                         className={`group relative overflow-hidden rounded-3xl p-1 transition-all hover:-translate-y-1 cursor-pointer ${data.avatarType === 'clone' ? 'border-2 border-primary-500 bg-primary-50 dark:bg-primary-900/10 shadow-neon scale-[1.02]' : 'bg-white dark:bg-dark-surface border border-slate-200 dark:border-dark-border'}`}
                     >
                          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=600')] bg-cover bg-center opacity-5 dark:opacity-10"></div>
@@ -129,7 +135,7 @@ const AvatarSelection: React.FC<Props> = ({ data, updateData, onNext, onBack, to
                                 Recomendado
                             </div>
                             <div className="relative mt-2">
-                                <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&q=80&w=150&h=150" alt="Clone" className="w-20 h-20 rounded-2xl object-cover shadow-lg border-2 border-white dark:border-dark-surface rotate-3 group-hover:rotate-0 transition-transform" />
+                                <img src={CLONE_IMG} alt="Clone" className="w-20 h-20 rounded-2xl object-cover shadow-lg border-2 border-white dark:border-dark-surface rotate-3 group-hover:rotate-0 transition-transform" />
                                 {data.avatarType === 'clone' && (
                                     <div className="absolute -bottom-2 -left-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary-500 text-white shadow-neon ring-4 ring-white dark:ring-dark-bg">
                                         <span className="material-symbols-outlined text-[16px]">check</span>
@@ -182,11 +188,11 @@ const AvatarSelection: React.FC<Props> = ({ data, updateData, onNext, onBack, to
                     <div className="grid grid-cols-2 gap-4">
                          {/* Human */}
                         <div 
-                            onClick={() => updateData({ avatarType: 'human' })}
+                            onClick={() => updateData({ avatarType: 'human', avatarUrl: HUMAN_IMG })}
                             className={`group relative flex flex-col overflow-hidden rounded-3xl bg-white dark:bg-dark-surface shadow-sm transition-all cursor-pointer active:scale-[0.98] ${data.avatarType === 'human' ? 'border-2 border-primary-500 shadow-neon' : 'border border-slate-200 dark:border-dark-border'}`}
                         >
                             <div className="aspect-[4/5] w-full bg-slate-100 dark:bg-dark-card relative">
-                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400")' }}></div>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url("${HUMAN_IMG}")` }}></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                                 {data.avatarType === 'human' && (
                                     <div className="absolute top-3 right-3 h-6 w-6 rounded-full bg-primary-500 flex items-center justify-center shadow-neon">
@@ -200,11 +206,11 @@ const AvatarSelection: React.FC<Props> = ({ data, updateData, onNext, onBack, to
                         </div>
                         {/* Mascot */}
                         <div 
-                            onClick={() => updateData({ avatarType: 'mascot' })}
+                            onClick={() => updateData({ avatarType: 'mascot', avatarUrl: MASCOT_IMG })}
                             className={`group relative flex flex-col overflow-hidden rounded-3xl bg-white dark:bg-dark-surface shadow-sm transition-all cursor-pointer active:scale-[0.98] ${data.avatarType === 'mascot' ? 'border-2 border-primary-500 shadow-neon' : 'border border-slate-200 dark:border-dark-border'}`}
                         >
                             <div className="aspect-[4/5] w-full bg-slate-100 dark:bg-dark-card relative">
-                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1634896941598-b6b500a502a7?q=80&w=400&auto=format&fit=crop")' }}></div>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url("${MASCOT_IMG}")` }}></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                                 {data.avatarType === 'mascot' && (
                                     <div className="absolute top-3 right-3 h-6 w-6 rounded-full bg-primary-500 flex items-center justify-center shadow-neon">

@@ -36,8 +36,6 @@ const CameraEditing: React.FC<Props> = ({ data, updateData, onNext, onBack, tota
     const renderCaptionImage = (captionType: string) => {
         if (captionType === 'Normal') {
             return <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=150" className="w-full h-full object-cover" alt="Subtitles" />;
-        } else if (captionType === 'Libras') {
-             return <img src="https://images.unsplash.com/photo-1520697830682-bbb6e85e2b0b?auto=format&fit=crop&q=80&w=150" className="w-full h-full object-cover" alt="Libras" />;
         } else {
             return <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=150" className="w-full h-full object-cover opacity-80" alt="No Subtitles" />;
         }
@@ -138,7 +136,7 @@ const CameraEditing: React.FC<Props> = ({ data, updateData, onNext, onBack, tota
                         <label className="text-sm font-semibold text-slate-800 dark:text-slate-200 tracking-wide uppercase text-[11px]">Estilo de Legenda</label>
                     </div>
                     <div className="flex flex-col gap-3">
-                        {['Normal', 'Sem Legenda', 'Libras'].map((caption) => (
+                        {['Normal', 'Sem Legenda'].map((caption) => (
                             <label key={caption} className="cursor-pointer group relative block">
                                 <input 
                                     checked={data.captionStyle === caption}
@@ -152,7 +150,7 @@ const CameraEditing: React.FC<Props> = ({ data, updateData, onNext, onBack, tota
                                         <div className="w-20 h-16 rounded-xl overflow-hidden bg-slate-200 relative shrink-0">
                                             {renderCaptionImage(caption)}
                                         </div>
-                                        <span className="text-slate-700 dark:text-slate-200 font-bold text-base">{caption === 'Libras' ? 'Libras (Intérprete)' : caption}</span>
+                                        <span className="text-slate-700 dark:text-slate-200 font-bold text-base">{caption}</span>
                                     </div>
                                     <div className="text-accent opacity-0 peer-checked:opacity-100 transition-all pr-4">
                                         <span className="material-symbols-outlined filled" style={{ fontSize: '24px', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
@@ -162,6 +160,50 @@ const CameraEditing: React.FC<Props> = ({ data, updateData, onNext, onBack, tota
                         ))}
                     </div>
                 </div>
+
+                 {/* Seção de Libras Separada */}
+                 <div className="flex flex-col gap-4 mt-2">
+                    <div className="flex items-center gap-2 ml-1">
+                        <span className="flex h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]"></span>
+                        <label className="text-sm font-semibold text-slate-800 dark:text-slate-200 tracking-wide uppercase text-[11px]">Intérprete de Libras (Acessibilidade)</label>
+                    </div>
+                    <div className="flex gap-4">
+                        <label className="flex-1 cursor-pointer group relative block">
+                            <input 
+                                checked={data.libras === true}
+                                onChange={() => updateData({ libras: true })}
+                                className="peer sr-only" 
+                                name="libras" 
+                                type="radio" 
+                            />
+                            <div className="relative flex items-center justify-center px-4 py-4 bg-white dark:bg-dark-surface rounded-2xl border border-slate-200 dark:border-dark-border peer-checked:border-indigo-500 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 peer-checked:shadow-[0_0_20px_rgba(99,102,241,0.5)] peer-checked:scale-[1.02] transition-all duration-300">
+                                <div className="flex flex-col items-center gap-1">
+                                    <span className="material-symbols-outlined text-3xl text-slate-400 peer-checked:text-indigo-600 dark:peer-checked:text-indigo-400">sign_language</span>
+                                    <span className="text-slate-700 dark:text-slate-200 font-bold text-base">Sim</span>
+                                </div>
+                                <div className="absolute top-2 right-2 text-indigo-500 opacity-0 peer-checked:opacity-100 transition-all scale-75 peer-checked:scale-100">
+                                    <span className="material-symbols-outlined filled text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                                </div>
+                            </div>
+                        </label>
+                        <label className="flex-1 cursor-pointer group relative block">
+                            <input 
+                                checked={data.libras === false}
+                                onChange={() => updateData({ libras: false })}
+                                className="peer sr-only" 
+                                name="libras" 
+                                type="radio" 
+                            />
+                             <div className="relative flex items-center justify-center px-4 py-4 bg-white dark:bg-dark-surface rounded-2xl border border-slate-200 dark:border-dark-border peer-checked:border-slate-400 dark:peer-checked:border-slate-500 peer-checked:bg-slate-100 dark:peer-checked:bg-white/5 transition-all duration-300">
+                                <div className="flex flex-col items-center gap-1">
+                                    <span className="material-symbols-outlined text-3xl text-slate-400 peer-checked:text-slate-600 dark:peer-checked:text-slate-300">do_not_touch</span>
+                                    <span className="text-slate-700 dark:text-slate-200 font-bold text-base">Não</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
             </main>
 
             <div className="fixed bottom-0 left-0 w-full z-40 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-xl border-t border-slate-200 dark:border-dark-border">

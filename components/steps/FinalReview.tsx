@@ -17,14 +17,29 @@ const FinalReview: React.FC<Props> = ({ data, onFinish, onBack, onEditStep, tota
         localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     };
 
-    const handleWhatsAppShare = () => {
+    // Helper function to generate the text (reused for display and sending)
+    const generateMessageText = () => {
         // Build character text
         let extrasText = '';
         if (data.extraCharacters && data.extraCharacters.length > 0) {
-            extrasText = '\n\n👥 *Elenco Extra:*\n' + data.extraCharacters.map(c => `- ${c.name} (${c.type}): ${c.description}`).join('\n');
+            extrasText = '\n\n👥 *Elenco Extra:*';
+            data.extraCharacters.forEach(c => {
+                 extrasText += `\n- ${c.name} (${c.type}): ${c.description}`;
+                 if (c.image) {
+                     extrasText += `\n  (📷 Imagem carregada: Anexar manualmente)`;
+                 }
+            });
         }
 
-        const text = `
+        // Build Avatar visual ref
+        let avatarRef = '';
+        if (data.avatarUrl) {
+            avatarRef = `\n🔗 *Ref. Avatar:* ${data.avatarUrl}`;
+        } else if (data.uploadedAvatarImage) {
+            avatarRef = `\n📷 *Ref. Avatar:* (Imagem Carregada - Anexar manualmente)`;
+        }
+
+        return `
 🎬 *NOVO BRIEFING DE VÍDEO* 🎬
 
 📌 *Projeto:* ${data.projectName}
@@ -43,21 +58,27 @@ ${data.objective || 'Não informado'}
 - Movimento: ${data.cameraMovement}
 - Transição: ${data.transition}
 - Legenda: ${data.captionStyle}
+- Libras: ${data.libras ? 'SIM' : 'NÃO'}
 
 🔊 *Áudio:*
 - Voz: ${data.audioVoice === 'male' ? 'Masculina' : 'Feminina'}
 - Música: ${data.audioMusic}
 
 👤 *Avatar Principal:* ${data.avatarType}
-- Nome: ${data.avatarName || 'Não informado'}${extrasText}
+- Nome: ${data.avatarName || 'Não informado'}${avatarRef}${extrasText}
 
 📝 *Roteiro Resumido:*
 Hook: ${data.script.hook}
 CTA: ${data.script.cta}
 
 🤖 *Gerado por Artifex*
-`;
-        const encoded = encodeURIComponent(text);
+`.trim();
+    };
+
+    const messageText = generateMessageText();
+
+    const handleWhatsAppShare = () => {
+        const encoded = encodeURIComponent(messageText);
         window.open(`https://wa.me/?text=${encoded}`, '_blank');
         onFinish(); // This now triggers save and redirect
     };
@@ -124,33 +145,21 @@ CTA: ${data.script.cta}
                     </div>
                 </div>
 
-                {/* Script Summary */}
-                 <div className="group relative bg-white dark:bg-dark-surface rounded-2xl p-4 border border-slate-200 dark:border-dark-border shadow-sm hover:shadow-md hover:border-secondary-200 transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary-50 text-secondary-600 dark:bg-secondary-500/10 dark:text-secondary-400">
-                            <span className="material-symbols-outlined text-2xl">article</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Roteiro</p>
-                                <button onClick={() => onEditStep(3)} className="text-slate-300 hover:text-secondary-500 dark:text-slate-600 dark:hover:text-secondary-400 transition-colors">
-                                    <span className="material-symbols-outlined text-[18px]">edit</span>
-                                </button>
-                            </div>
-                            <div className="relative mt-1 pl-3 border-l-2 border-secondary-200 dark:border-secondary-800">
-                                <p className="text-sm italic text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
-                                    "{data.script.hook || 'Sem roteiro definido'}"
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                  {/* Avatar */}
                 <div className="group relative bg-white dark:bg-dark-surface rounded-2xl p-4 border border-slate-200 dark:border-dark-border shadow-sm hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-4">
                         <div className="relative shrink-0">
-                            <img alt="Avatar" className="relative size-14 rounded-full object-cover border-2 border-white dark:border-dark-surface shadow-sm" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100" />
+                            {/* Visual Preview Logic */}
+                            {data.uploadedAvatarImage ? (
+                                <img alt="Avatar" className="relative size-14 rounded-full object-cover border-2 border-white dark:border-dark-surface shadow-sm" src={data.uploadedAvatarImage} />
+                            ) : data.avatarUrl ? (
+                                <img alt="Avatar" className="relative size-14 rounded-full object-cover border-2 border-white dark:border-dark-surface shadow-sm" src={data.avatarUrl} />
+                            ) : (
+                                <div className="relative size-14 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center border-2 border-white dark:border-dark-surface shadow-sm">
+                                    <span className="material-symbols-outlined text-slate-400">person</span>
+                                </div>
+                            )}
+                            
                             <div className="absolute -bottom-1 -right-1 bg-white dark:bg-dark-surface rounded-full p-0.5 border border-slate-100 dark:border-dark-border shadow-sm">
                                 <span className="material-symbols-outlined text-secondary-500 text-[16px]">verified</span>
                             </div>
@@ -169,7 +178,17 @@ CTA: ${data.script.cta}
                     </div>
                 </div>
 
-                <div className="mt-8 px-6 mb-4">
+                {/* WhatsApp Text Preview Box */}
+                <div className="mt-4 mb-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1 mb-2 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[16px]">visibility</span> Prévia da Mensagem
+                    </h4>
+                    <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-dark-border text-xs text-slate-600 dark:text-slate-300 font-mono whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto shadow-inner">
+                        {messageText}
+                    </div>
+                </div>
+
+                <div className="mt-2 px-6 mb-4">
                     <label className="flex items-start gap-4 cursor-pointer group p-4 rounded-xl hover:bg-white dark:hover:bg-dark-surface border border-transparent hover:border-slate-100 dark:hover:border-dark-border transition-all">
                         <div className="relative flex items-center pt-0.5">
                             <input className="peer appearance-none size-6 rounded-lg border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-dark-surface checked:bg-primary-600 checked:border-primary-600 focus:ring-0 focus:ring-offset-0 transition-all cursor-pointer" type="checkbox" />
@@ -179,11 +198,23 @@ CTA: ${data.script.cta}
                         </div>
                         <div className="flex-1">
                             <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-snug group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
-                                Confirmo que revisei todas as informações.
+                                Confirmo que li a prévia e revisei as informações.
                             </p>
                         </div>
                     </label>
                 </div>
+                
+                {/* Warning about manual attachments if necessary */}
+                {(data.uploadedAvatarImage || (data.extraCharacters && data.extraCharacters.some(c => c.image))) && (
+                    <div className="px-6 mb-2">
+                        <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg flex items-start gap-3">
+                            <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-[20px] mt-0.5">warning</span>
+                            <p className="text-xs text-yellow-800 dark:text-yellow-200 leading-relaxed">
+                                <strong>Atenção:</strong> Imagens carregadas do seu dispositivo não podem ser enviadas automaticamente via link. Por favor, <strong>anexe as fotos manualmente</strong> na conversa do WhatsApp após clicar no botão.
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 <div className="fixed bottom-0 left-0 right-0 z-40 px-5 pt-4 pb-8 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-lg border-t border-slate-200 dark:border-dark-border max-w-md mx-auto">
                     <button 
@@ -191,7 +222,7 @@ CTA: ${data.script.cta}
                         className="group relative w-full flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 active:from-primary-700 active:to-secondary-700 py-4 px-6 shadow-neon transition-all transform active:scale-[0.98]"
                     >
                         <span className="material-symbols-outlined text-white text-[24px]">chat</span>
-                        <span className="text-lg font-bold text-white tracking-wide">Salvar e Gerar WhatsApp</span>
+                        <span className="text-lg font-bold text-white tracking-wide">Salvar e Enviar</span>
                     </button>
                     <p className="text-center text-[10px] text-slate-400 mt-3 font-medium uppercase tracking-widest">Abre o app do WhatsApp</p>
                 </div>

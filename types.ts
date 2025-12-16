@@ -17,7 +17,8 @@ export interface BriefingData {
     assetsLink: string;
     avatarType: 'clone' | 'human' | 'mascot' | 'audio_only' | 'upload';
     avatarName?: string;
-    uploadedAvatarImage?: string; // For preview
+    avatarUrl?: string; // URL pública para compartilhamento (se aplicável)
+    uploadedAvatarImage?: string; // For preview (Base64)
     hasMoreCharacters?: boolean;
     extraCharacters?: ExtraCharacter[];
     script: {
@@ -33,6 +34,7 @@ export interface BriefingData {
     cameraMovement: string;
     transition: string;
     captionStyle: string;
+    libras: boolean; // New field for sign language interpreter
     audioVoice: 'male' | 'female';
     audioMusic: string;
     negativePrompt: string;
@@ -47,6 +49,7 @@ export const INITIAL_DATA: BriefingData = {
     assetsLink: '',
     avatarType: 'human',
     avatarName: '',
+    avatarUrl: '',
     hasMoreCharacters: false,
     extraCharacters: [],
     script: {
@@ -62,6 +65,7 @@ export const INITIAL_DATA: BriefingData = {
     cameraMovement: 'Estático',
     transition: 'Corte Seco',
     captionStyle: 'Moderno',
+    libras: false,
     audioVoice: 'female',
     audioMusic: 'pop',
     negativePrompt: 'Pessoas, '
