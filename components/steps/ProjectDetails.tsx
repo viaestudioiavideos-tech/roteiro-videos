@@ -29,8 +29,7 @@ const ProjectDetails: React.FC<Props> = ({ data, updateData, onNext, onBack, tot
         { id: 'propaganda', label: 'Propaganda', img: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=300&h=200' },
         { id: 'venda', label: 'Venda Prod.', img: 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=300&h=200' },
         { id: 'educacional', label: 'Educacional', img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=300&h=200' },
-        // Fixed broken image for 'outros'
-        { id: 'outros', label: 'Outros', img: 'https://images.unsplash.com/photo-1601506521937-2433d3e3a936?auto=format&fit=crop&q=80&w=300&h=200' },
+        { id: 'outros', label: 'Outros', img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=300&h=200' },
     ];
 
     return (
