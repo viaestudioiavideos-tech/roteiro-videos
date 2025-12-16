@@ -35,13 +35,13 @@ const Welcome: React.FC<WelcomeProps> = ({ onStart }) => {
                 <div className="relative w-full aspect-[4/3] mb-8 group">
                     <div className="absolute inset-0 bg-gradient-to-tr from-primary-500 to-accent-500 rounded-3xl blur opacity-20 dark:opacity-30 group-hover:opacity-40 transition-opacity duration-500"></div>
                     <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/5 dark:ring-white/10 bg-gray-200 dark:bg-gray-800">
-                        {/* Imagem Futurística Moderna Artifex */}
-                        <div className="w-full h-full bg-center bg-cover transform transition-transform duration-700 hover:scale-105" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop")' }}>
+                        {/* Imagem: Sala moderna de Studio de Criação com Hologramas */}
+                        <div className="w-full h-full bg-center bg-cover transform transition-transform duration-700 hover:scale-105" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=800&auto=format&fit=crop")' }}>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70"></div>
                         </div>
                         <div className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium shadow-lg">
                             <span className="w-1.5 h-1.5 rounded-full bg-primary-400 animate-pulse"></span>
-                            Artifex AI Script
+                            Artifex Studio
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ const Welcome: React.FC<WelcomeProps> = ({ onStart }) => {
                             </span>
                         </h1>
                         <p className="text-slate-600 dark:text-slate-300 text-[17px] leading-relaxed font-normal max-w-[95%]">
-                            Ferramenta exclusiva para estruturação de ideias e geração de roteiros persuasivos para seus clientes.
+                            Ferramenta especializada na estruturação de roteiro do projeto para ajudar o cliente a visualizar a ideia e garantir o melhor resultado.
                         </p>
                     </div>
 
